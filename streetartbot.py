@@ -6,6 +6,8 @@ class StreetArtBot:
 		im = Image.open(fileName) 
 		size = maxWidth, maxHeight
 		im.thumbnail(size)
+		self.maxWidth = maxWidth
+		self.maxHeight = maxHeight
 		self.width = im.size[0]
 		self.height = im.size[1]
 
@@ -23,13 +25,15 @@ class StreetArtBot:
 					if cmyk[c]>=0.5: self.colors[x][y][c]=1
 				if pixel[0]>128: self.colors[x][y][4]=1
 
-	// c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
-	def checkSpray(self, x, y, c):
-		if x<=self.width and y<=self.height and self.colors[x][y][c]==1 and self.sprayed[x][y][c]==0:
+	# c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
+	def checkSpray(self, xPercent, yPercent, c):
+		x = int(xPercent * self.maxWidth)
+		y = int(yPercent * self.maxHeight)
+		#print str(y) + " - " + str(self.height)
+		if x<self.width and y<self.height and self.colors[x][y][c]==1 and self.sprayed[x][y][c]==0:
 			SprayChalk()
-			self.sprayed[x][y][c]==1
-			#if c==4: print str(x) + "," + str(y)
-
+			self.sprayed[x][y][c]=1
+			print "Spaying " + str(x) + "," + str(y) + " - " + str(xPercent) + "," + str(yPercent)
 
 
 	def getCMYK(this, r,g,b):
@@ -53,7 +57,12 @@ class StreetArtBot:
 		return c*cmyk_scale, m*cmyk_scale, y*cmyk_scale, k*cmyk_scale
 				
 				
-bot = StreetArtBot()
-bot.loadImage("images/logo.png", 64, 64)
-bot.checkSpray(32,15,4)
-bot.checkSpray(63,22,4)
+#bot = StreetArtBot()
+#bot.loadImage("images/logo.png", 120, 90)
+
+#bot.checkSpray(0.98, 0.50, 4)
+#bot.checkSpray(0.98, 0.51, 4)
+
+#for x in range(100):
+#	for y in range(100):
+#		bot.checkSpray(x/100.0, y/100.0, 4)
