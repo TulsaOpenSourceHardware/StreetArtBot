@@ -1,7 +1,7 @@
 import Image
 from communications import SprayChalk
 
-class StreetArtBot:
+class ChalkBoard:
 	def loadImage(self, fileName, maxWidth, maxHeight):
 		im = Image.open(fileName) 
 		size = maxWidth, maxHeight
