@@ -7,7 +7,7 @@ def init(port):
   global inited;
   global chalk
   inited=1;
-  chalk=serial.Serial(port);
+  chalk=serial.Serial("COM7");
   chalk.open();
 
 def SprayChalk():

@@ -57,7 +57,7 @@ class ChalkBoard:
 		return c*cmyk_scale, m*cmyk_scale, y*cmyk_scale, k*cmyk_scale
 	
 	def init(this):
-		communications.init(6)
+		communications.init("COM6")
 
 				
 #bot = StreetArtBot()

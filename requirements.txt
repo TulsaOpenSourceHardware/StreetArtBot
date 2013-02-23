@@ -4,4 +4,4 @@ ipdb
 ipdbplugin
 ipython
 pil
-serial
+pyserial
