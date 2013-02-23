@@ -16,6 +16,8 @@ board = ChalkBoard()
 #board.loadImage("images/gear.jpg", 120, 90)
 board.loadImage("images/logo.png", 120, 90)
 
+board.init()
+
 try:
     while True:
         tracking.update()

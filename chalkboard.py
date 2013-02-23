@@ -1,5 +1,5 @@
 import Image
-from communications import SprayChalk
+import communications
 
 class ChalkBoard:
 	def loadImage(self, fileName, maxWidth, maxHeight):
@@ -31,7 +31,7 @@ class ChalkBoard:
 		x = int(xPercent * self.maxWidth)
 		y = int(yPercent * self.maxHeight)
 		if x<self.width and y<self.height and self.colors[x][y][c]==1 and self.sprayed[x][y][c]==0:
-			SprayChalk()
+			communications.SprayChalk()
 			self.sprayed[x][y][c]=1
 			print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
 
@@ -55,7 +55,10 @@ class ChalkBoard:
 
 		# rescale to the range [0,cmyk_scale]
 		return c*cmyk_scale, m*cmyk_scale, y*cmyk_scale, k*cmyk_scale
-				
+	
+	def init(this):
+		communications.init(6)
+
 				
 #bot = StreetArtBot()
 #bot.loadImage("images/logo.png", 120, 90)
