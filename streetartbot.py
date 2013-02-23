@@ -3,31 +3,57 @@ from communications import SprayChalk
 
 class StreetArtBot:
 	def loadImage(self, fileName, maxWidth, maxHeight):
-		im = Image.open(fileName) #mode=1 for black and white
+		im = Image.open(fileName) 
 		size = maxWidth, maxHeight
 		im.thumbnail(size)
 		self.width = im.size[0]
 		self.height = im.size[1]
-		self.pixels = [[0 for y in range(self.height)] for x in range(self.width)]
-		self.sprayed = [[0 for y in range(self.height)] for x in range(self.width)]
+
+#		self.black = [[0 for y in range(self.height)] for x in range(self.width)]
+		self.colors = [[[0 for z in range(5)] for y in range(self.height)] for x in range(self.width)]				
+		self.sprayed = [[[0 for z in range(5)] for y in range(self.height)] for x in range(self.width)]				
+#		self.sprayed = [[0 for y in range(self.height)] for x in range(self.width)]
+
 		for x in range(self.width):
 			for y in range(self.height):
 				point = x,y
 				pixel = im.getpixel(point)
-				if pixel[0]>=128:
-					self.pixels[x][y]=1
-					#print str(point) + " - " + str(self.width) + "," + str(self.height)
-				else:
-					self.pixels[x][y]=0
+				cmyk = self.getCMYK(pixel[0], pixel[1], pixel[2])
+				for c in range(4):
+					if cmyk[c]>=0.5: self.colors[x][y][c]=1
+				if pixel[0]>128: self.colors[x][y][4]=1
 
-	def checkSpray(self, x, y):
-		if x<=self.width and y<=self.height and self.pixels[x][y]==1 and self.sprayed[x][y]==0:
+	// c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
+	def checkSpray(self, x, y, c):
+		if x<=self.width and y<=self.height and self.colors[x][y][c]==1 and self.sprayed[x][y][c]==0:
 			SprayChalk()
-			self.sprayed[x][y]==1
-			
+			self.sprayed[x][y][c]==1
+			#if c==4: print str(x) + "," + str(y)
+
+
+
+	def getCMYK(this, r,g,b):
+		cmyk_scale = 100
+		if (r == 0) and (g == 0) and (b == 0):
+			# black
+			return 0, 0, 0, cmyk_scale
+		# rgb [0,255] -> cmy [0,1]
+		c = 1 - r / 255.
+		m = 1 - g / 255.
+		y = 1 - b / 255.
+
+		# extract out k [0,1]
+		min_cmy = min(c, m, y)
+		c = (c - min_cmy) / (1 - min_cmy)
+		m = (m - min_cmy) / (1 - min_cmy)
+		y = (y - min_cmy) / (1 - min_cmy)
+		k = min_cmy
+
+		# rescale to the range [0,cmyk_scale]
+		return c*cmyk_scale, m*cmyk_scale, y*cmyk_scale, k*cmyk_scale
 				
 				
 bot = StreetArtBot()
 bot.loadImage("images/logo.png", 64, 64)
-bot.checkSpray(32,15)
-bot.checkSpray(63,22)
+bot.checkSpray(32,15,4)
+bot.checkSpray(63,22,4)
