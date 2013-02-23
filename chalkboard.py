@@ -22,18 +22,18 @@ class ChalkBoard:
 				pixel = im.getpixel(point)
 				cmyk = self.getCMYK(pixel[0], pixel[1], pixel[2])
 				for c in range(4):
-					if cmyk[c]>=0.5: self.colors[x][y][c]=1
+					if cmyk[c]>=0.5: 
+						self.colors[x][y][c]=1
 				if pixel[0]>128: self.colors[x][y][4]=1
 
 	# c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
 	def checkSpray(self, xPercent, yPercent, c):
 		x = int(xPercent * self.maxWidth)
 		y = int(yPercent * self.maxHeight)
-		#print str(y) + " - " + str(self.height)
 		if x<self.width and y<self.height and self.colors[x][y][c]==1 and self.sprayed[x][y][c]==0:
 			SprayChalk()
 			self.sprayed[x][y][c]=1
-			print "Spaying " + str(x) + "," + str(y) + " - " + str(xPercent) + "," + str(yPercent)
+			print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
 
 
 	def getCMYK(this, r,g,b):
