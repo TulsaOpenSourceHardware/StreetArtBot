@@ -1,14 +1,17 @@
 import Image
-import communications
+from communications import Spray
 import serial
 
 class ChalkBoard:
-	spraying = 0
-	def __init__(self):
-		try:
-			communications.init("COM6")
-		except serial.serialutil.SerialException:
-			pass
+	def __init__(self, port=False):	
+		self.port = port
+		self.continuous_spray = False
+		if self.port:
+			try:
+				self.spray = Spray(self.port)
+			except serial.serialutil.SerialException as e:
+				print e
+				pass
 		print "init"
 		
 	def loadImage(self, fileName, maxWidth, maxHeight):
@@ -34,7 +37,7 @@ class ChalkBoard:
 					if cmyk[c]>=0.5: 
 						self.colors[x][y][c]=1
 				if pixel[0]<128: self.colors[x][y][4]=1
-		return (self.width, self.height)
+		return (self.width, self.height, im)
 
 	# c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
 	def checkSpray(self, xPercent, yPercent, c):
@@ -45,20 +48,24 @@ class ChalkBoard:
 		if x<self.width and y<self.height and self.colors[x][y][c]==1:
 			if self.sprayed[x][y][c]==0:
 				self.sprayed[x][y][c]=1
-				if self.spraying==0:
-					try:
-						communications.SprayChalk()
-					except:
-						print 'tailed to chalk'
+				if self.spray.spraying == False:
+					if self.port:
+						try:
+							if self.continuous_spray:
+								self.spray.on()
+							else:
+								self.spray.pulse()
+						except:
+							print 'failed to chalk'
 					print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
-					self.spraying = 1
+				
 		else:
-			if self.spraying==1:
-				try:
-					communications.StopSpraying()
-				except:
-					print 'tailed to chalk'
-				self.spraying = 0
+			if self.spray.spraying == True and self.continuous_spray:
+				if self.port:
+					try:
+						self.spray.off()
+					except:
+						print 'failed to chalk'
 				print "Stopped " + str(x) + "," + str(y) + " - " + str(c)
 		return (x, y)
 
