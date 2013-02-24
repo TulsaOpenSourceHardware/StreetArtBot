@@ -1,7 +1,16 @@
 import Image
 import communications
+import serial
 
 class ChalkBoard:
+	spraying = 0
+	def __init__(self):
+		try:
+			communications.init("COM6")
+		except serial.serialutil.SerialException:
+			pass
+		print "init"
+		
 	def loadImage(self, fileName, maxWidth, maxHeight):
 		im = Image.open(fileName) 
 		size = maxWidth, maxHeight
@@ -30,8 +39,6 @@ class ChalkBoard:
 	# c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
 	def checkSpray(self, xPercent, yPercent, c):
 		#communications.Step()
-
-
 		x = int(xPercent * self.maxWidth)
 		y = int(yPercent * self.maxHeight)
 		#print str(x) + "," + str(y) + " - " + str(c)
@@ -39,14 +46,21 @@ class ChalkBoard:
 			if self.sprayed[x][y][c]==0:
 				self.sprayed[x][y][c]=1
 				if self.spraying==0:
-					communications.SprayChalk()
+					try:
+						communications.SprayChalk()
+					except:
+						print 'tailed to chalk'
 					print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
 					self.spraying = 1
 		else:
 			if self.spraying==1:
-				communications.StopSpraying()
+				try:
+					communications.StopSpraying()
+				except:
+					print 'tailed to chalk'
 				self.spraying = 0
 				print "Stopped " + str(x) + "," + str(y) + " - " + str(c)
+		return (x, y)
 
 	def getCMYK(this, r,g,b):
 		cmyk_scale = 100
@@ -67,11 +81,6 @@ class ChalkBoard:
 
 		# rescale to the range [0,cmyk_scale]
 		return c*cmyk_scale, m*cmyk_scale, y*cmyk_scale, k*cmyk_scale
-	
-	def init(self):
-		self.spraying=0
-		communications.init("COM6")
-		print "init"
 
 				
 #bot = StreetArtBot()
