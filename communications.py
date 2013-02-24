@@ -17,6 +17,11 @@ def Step():
     time.sleep(.1);
 def StopSpraying():
   chalk.write('L')
+  chalk.write('L')
+  chalk.write('L')
+  chalk.write('L')
+  chalk.write('L')
+  print "Chalk Off";
 def SprayChalk():
   global chalk
   global inited
@@ -25,10 +30,12 @@ def SprayChalk():
     return
   print "Chalk on";
   chalk.write('H');
+  chalk.write('H');
+  chalk.write('H');
+  chalk.write('H');
+  chalk.write('H');
   #time.sleep(.1);
   #chalk.write('L');
   #chalk.write('L');
   #chalk.write('L');
   #chalk.write('L');
-  print "Chalk Off";
-  

@@ -30,16 +30,22 @@ class ChalkBoard:
 	def checkSpray(self, xPercent, yPercent, c):
 		#communications.Step()
 
+
 		x = int(xPercent * self.maxWidth)
 		y = int(yPercent * self.maxHeight)
-		print str(x) + "," + str(y) + " - " + str(c)
-		if x<self.width and y<self.height and self.colors[x][y][c]==1 and self.sprayed[x][y][c]==0:
-			communications.SprayChalk()
-			self.sprayed[x][y][c]=1
-			print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
+		#print str(x) + "," + str(y) + " - " + str(c)
+		if x<self.width and y<self.height and self.colors[x][y][c]==1:
+			if self.sprayed[x][y][c]==0:
+				self.sprayed[x][y][c]=1
+				if self.spraying==0:
+					communications.SprayChalk()
+					print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
+					self.spraying = 1
 		else:
-			communications.StopSpraying()
-
+			if self.spraying==1:
+				communications.StopSpraying()
+				self.spraying = 0
+				print "Stopped " + str(x) + "," + str(y) + " - " + str(c)
 
 	def getCMYK(this, r,g,b):
 		cmyk_scale = 100
@@ -61,7 +67,8 @@ class ChalkBoard:
 		# rescale to the range [0,cmyk_scale]
 		return c*cmyk_scale, m*cmyk_scale, y*cmyk_scale, k*cmyk_scale
 	
-	def init(this):
+	def init(self):
+		self.spraying=0
 		communications.init("COM6")
 		print "init"
 
