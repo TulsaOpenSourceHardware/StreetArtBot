@@ -12,6 +12,11 @@ def init(port):
   chalk.close();
   chalk.open();
 
+def Step():
+    chalk.write('L');
+    time.sleep(.1);
+def StopSpraying():
+  chalk.write('L')
 def SprayChalk():
   global chalk
   global inited
@@ -20,6 +25,10 @@ def SprayChalk():
     return
   print "Chalk on";
   chalk.write('H');
-  time.sleep(.01);
+  #time.sleep(.1);
+  #chalk.write('L');
+  #chalk.write('L');
+  #chalk.write('L');
+  #chalk.write('L');
   print "Chalk Off";
-  chalk.write('L');
+  

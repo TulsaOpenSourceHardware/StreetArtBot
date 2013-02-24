@@ -24,16 +24,21 @@ class ChalkBoard:
 				for c in range(4):
 					if cmyk[c]>=0.5: 
 						self.colors[x][y][c]=1
-				if pixel[0]>128: self.colors[x][y][4]=1
+				if pixel[0]<128: self.colors[x][y][4]=1
 
 	# c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
 	def checkSpray(self, xPercent, yPercent, c):
+		#communications.Step()
+
 		x = int(xPercent * self.maxWidth)
 		y = int(yPercent * self.maxHeight)
+		print str(x) + "," + str(y) + " - " + str(c)
 		if x<self.width and y<self.height and self.colors[x][y][c]==1 and self.sprayed[x][y][c]==0:
 			communications.SprayChalk()
 			self.sprayed[x][y][c]=1
 			print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
+		else:
+			communications.StopSpraying()
 
 
 	def getCMYK(this, r,g,b):
@@ -58,6 +63,7 @@ class ChalkBoard:
 	
 	def init(this):
 		communications.init("COM6")
+		print "init"
 
 				
 #bot = StreetArtBot()

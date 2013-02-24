@@ -13,8 +13,9 @@ print "list functions to access tracked objects:", tracking.get_helpers()
 track_fiducials = [0,1,2,3,4]
 
 board = ChalkBoard()
+board.loadImage("images/jeremy.jpg", 120, 90)
 #board.loadImage("images/gear.jpg", 120, 90)
-board.loadImage("images/logo.png", 120, 90)
+#board.loadImage("images/logo.png", 120, 90)
 
 board.init()
 
@@ -30,7 +31,7 @@ try:
                     break
                 continue
         # 
-        # sleep(0.100)
+        #sleep(0.100)
 
 except KeyboardInterrupt:
     tracking.stop()
