@@ -25,6 +25,7 @@ class ChalkBoard:
 					if cmyk[c]>=0.5: 
 						self.colors[x][y][c]=1
 				if pixel[0]<128: self.colors[x][y][4]=1
+		return (self.width, self.height)
 
 	# c - 0=Cyan, 1=Magenta, 2=Yellow, 3=Black, 4=Grayscale
 	def checkSpray(self, xPercent, yPercent, c):

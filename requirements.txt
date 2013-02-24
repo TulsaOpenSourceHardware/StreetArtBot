@@ -5,3 +5,4 @@ ipdbplugin
 ipython
 pil
 pyserial
+hg+http://bitbucket.org/pygame/pygame
