@@ -38,6 +38,7 @@ class ChalkBoard:
 			if self.sprayed[x][y][c]==0:
 				self.sprayed[x][y][c]=1
 				if self.spraying==0:
+					communications.StopSpraying()
 					communications.SprayChalk()
 					print "Spraying " + str(x) + "," + str(y) + " - " + str(c)
 					self.spraying = 1

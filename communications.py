@@ -8,7 +8,7 @@ def init(port):
   global chalk
   inited=1;
 
-  chalk=serial.Serial("COM6");
+  chalk=serial.Serial("COM7");
   chalk.close();
   chalk.open();
 

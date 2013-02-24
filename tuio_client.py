@@ -13,7 +13,7 @@ print "list functions to access tracked objects:", tracking.get_helpers()
 track_fiducials = [0,1,2,3,4]
 
 board = ChalkBoard()
-board.loadImage("images/fab.jpg", 120, 90)
+board.loadImage("images/square2.jpg", 120, 90)
 #board.loadImage("images/gear.jpg", 120, 90)
 #board.loadImage("images/logo.png", 120, 90)
 
